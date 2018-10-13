@@ -1,6 +1,22 @@
-FROM openjdk:8-jdk
+FROM resin/rpi-raspbian
 
-RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
+# Install Java 8
+# https://blog.livthomas.net/installing-java-8-on-raspberry-pi-3/
+RUN apt-get remove openjdk*
+RUN mkdir /usr/java
+
+# Download Java 8 and extract it to /usr/java
+# https://gist.github.com/P7h/9741922
+RUN curl -C - -LR#OH "Cookie: oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-arm32-vfp-hflt.tar.gz" \
+  && tar -zvxf jdk-8u181-linux-arm32-vfp-hflt.tar.gz -C /usr/java
+
+# Add Java to $PATH
+ENV PATH="/usr/java/jdk1.8.0_181/bin:${PATH}"
+RUN echo "Installed Java:" && java -version
+
+# Needed by Jenkins helper .sh scripts
+RUN apt-get update
+RUN apt-get install zip unzip -y
 
 ARG user=jenkins
 ARG group=jenkins
@@ -31,7 +47,7 @@ VOLUME $JENKINS_HOME
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
 # Use tini as subreaper in Docker container to adopt zombie processes
-ARG TINI_VERSION=v0.16.1
+ENV TINI_VERSION=v0.18.0
 COPY tini_pub.gpg ${JENKINS_HOME}/tini_pub.gpg
 RUN curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$(dpkg --print-architecture) -o /sbin/tini \
   && curl -fsSL https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static-$(dpkg --print-architecture).asc -o /sbin/tini.asc \

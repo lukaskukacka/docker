@@ -1,3 +1,14 @@
+This is a fork of [jenkinsci/docker](https://github.com/jenkinsci/docker) modified for Raspberry Pi support.
+
+- Based on Raspbian image `resin/rpi-raspbian`
+- Using Oracle Java 8 JDK
+
+Tested on _Raspberry Pi 3 B+_
+
+_This is a result of my "learn Docker by doing". No guarantees given; I don't take any responsibility for eventual damage or loss caused by usage of this repo._
+
+---
+
 # Official Jenkins Docker image
 
 The Jenkins Continuous Integration and Delivery server [available on Docker Hub](https://hub.docker.com/r/jenkins/jenkins).
