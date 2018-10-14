@@ -2,6 +2,7 @@ This is a fork of [jenkinsci/docker](https://github.com/jenkinsci/docker) modifi
 
 - Based on Raspbian image `resin/rpi-raspbian`
 - Using Oracle Java 8 JDK
+- Using newer Jenkins version
 
 Tested on _Raspberry Pi 3 B+_
 
